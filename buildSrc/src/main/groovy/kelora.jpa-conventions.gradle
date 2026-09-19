@@ -1,0 +1,7 @@
+plugins {
+    id 'kelora.spring-service-conventions'
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+}
