@@ -612,10 +612,6 @@ Focus:
 - Docker-based local development environment
 - foundational authentication design
 
-### Phase 2 — Tenant & Access
-
-Focus:
-
 - businesses / tenants
 - memberships
 - invitations
@@ -624,7 +620,7 @@ Focus:
 - subscription foundation
 - tenant-level authorization
 
-### Phase 3 — WMS
+### Phase 2 — WMS
 
 Focus:
 
@@ -638,7 +634,7 @@ Focus:
 - expiry
 - stock ledger
 
-### Phase 4 — Reporting & Operational Insights
+### Phase 3 — Reporting & Operational Insights
 
 Focus:
 
@@ -647,7 +643,7 @@ Focus:
 - dashboards
 - operational analytics
 
-### Phase 5 — POS & CRM
+### Phase 4 — POS & CRM
 
 Focus:
 
@@ -657,6 +653,17 @@ Focus:
 - receipts
 - customer profiles
 - customer transaction history
+
+### Phase 5 — Forecasting & AI
+
+Potential focus:
+
+- demand forecasting
+- replenishment recommendations
+- inventory anomaly detection
+- expiry-risk analysis
+- telemetry-assisted insights
+- business decision support
 
 ### Phase 6 — IoT Integration
 
@@ -670,17 +677,6 @@ Potential focus:
 - threshold rules
 - cold-chain monitoring
 - operational alerts
-
-### Phase 7 — Forecasting & AI
-
-Potential focus:
-
-- demand forecasting
-- replenishment recommendations
-- inventory anomaly detection
-- expiry-risk analysis
-- telemetry-assisted insights
-- business decision support
 
 The roadmap may change as KELORA is validated against real-world requirements.
 
