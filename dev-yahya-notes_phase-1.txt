@@ -1,0 +1,283 @@
+################## High - Level Architecture ################################
+ 				     KELORA
+                                       │
+                  ┌──────────────┴──────────────┐
+                  │                             │
+              PLATFORM                     BUSINESS
+                  │                             │
+        ┌─────────┼─────────┐         ┌────────┴─────────┐
+        │         │         │         │                  │
+       Auth     Tenant   Subscription WMS             Future
+        │         │         │         │                  │
+        │         │         │         │          ┌───────┼────────┐
+        │         │         │         │          │       │        │
+        │         │         │         │         POS    CRM   Purchasing
+        │         │         │         │
+        │         │         │     ┌───┴─────────────────────┐
+        │         │         │     │                         │
+        │         │         │  Master Data            Inventory
+        │         │         │     │                         │
+        │         │         │  Product                  Ledger
+        │         │         │  Warehouse                  │
+        │         │         │  Category           ┌───────┼───────┐
+        │         │         │  Batch             IN      OUT    TRANSFER
+        │         │         │  Expiry                     │
+        │         │         │                       ADJUSTMENT
+        │         │         │
+        └─────────┴─────────┴──────────────────────────────┘
+                                 │
+                                 ▼
+                             ANALYTICS
+                                 │
+                                 ▼
+                            FORECASTING
+                                 │
+                                 ▼
+                                AI
+
+
+
+
+
+
+                              USERS
+                                │
+                                ▼
+                         ┌─────────────┐
+                         │  Kelora WEB      │
+                         │    React         │
+                         └──────┬──────┘
+                                │
+                                ▼
+                         ┌─────────────┐
+                         │ API GATEWAY │
+                         └──────┬──────┘
+                                │
+             ┌──────────────────┼──────────────────┐
+             │                  │                  │
+             ▼                  ▼                  ▼
+     ┌──────────────┐   ┌──────────────┐   ┌──────────────┐
+     │   Identity   	  │   │    Tenant         │   │     WMS           │
+     │   Service      	  │   │    Service        │   │   Service         │
+     └──────┬───────┘   └──────┬───────┘   └──────┬───────┘
+            │                  │                  │
+            ▼                  ▼                  ▼
+      identity_db          tenant_db           wms_db
+                               │                  │
+                               └────────┬─────────┘
+                                        │
+                                        ▼
+                                      Kafka
+                                        │
+                                        ▼
+                              ┌──────────────────┐
+                              │   Notification   │
+                              │     Service      │
+                              └────────┬─────────┘
+                                       │
+                              ┌────────┼─────────┐
+                              ▼        ▼         ▼
+                            Email   WhatsApp    SMS
+
+
+################## SUBSCRIPTION PLAN #########################################
+
+| Feature               |            FREE |   BASIC |      PRO |
+| --------------------- | --------------: | ------: | -------: |
+| Account               | Unlimited login |       ✓ |        ✓ |
+| Tenant/business       |               1 |       1 |       1+ |
+| Warehouse             |           **1** |       2 |       5+ |
+| User/member           |           **2** |       5 |      15+ |
+| Product/SKU           |         **100** |   1.000 |  10.000+ |
+| Stock management      |               ✓ |       ✓ |        ✓ |
+| Batch/Lot             |               ✓ |       ✓ |        ✓ |
+| Expiry date           |               ✓ |       ✓ |        ✓ |
+| Goods receiving       |               ✓ |       ✓ |        ✓ |
+| Stock adjustment      |               ✓ |       ✓ |        ✓ |
+| Basic stock report    |               ✓ |       ✓ |        ✓ |
+| Warehouse transfer    |               — |       ✓ |        ✓ |
+| Email notification    |         Limited |       ✓ |        ✓ |
+| WhatsApp notification | — / quota kecil |  Add-on | ✓/Add-on |
+| Advanced reports      |               — |       ✓ |        ✓ |
+| Analytics             |               — | Limited |        ✓ |
+| Forecasting           |               — |       — |        ✓ |
+| AI                    |               — |       — |        ✓ |
+| API integration       |               — |       — |        ✓ |
+
+
+Subscription
+     +
+Add-ons
+│
+├── Extra Warehouse       + Rp xx.xxx/month
+├── Extra Users           + Rp xx.xxx/month
+├── WhatsApp Package      + Rp xx.xxx
+├── AI Credits            + Rp xx.xxx
+├── Extra Storage         + Rp xx.xxx
+└── API / Integration     + Rp xx.xxx
+
+
+
+                    PT FROZEN JAYA
+                         T001
+                          │
+                    BASIC PLAN
+                          │
+                   MAX MEMBERS = 5
+                          │
+          ┌───────────────┼───────────────┐
+          ▼               ▼               ▼
+        Budi            Hafid           Andi
+       OWNER          WMS_STAFF      WMS_MANAGER
+
+       Tidak ada subscription per user.
+
+
+
+
+############################## DATABASE ###################################################
+
+Kelora PHASE 1
+│
+├── IDENTITY SERVICE                  5
+│   ├── users
+│   ├── user_credentials
+│   ├── refresh_tokens
+│   ├── email_verifications
+│   └── password_reset_tokens
+│
+├── TENANT SERVICE                   13
+│   ├── business_types
+│   ├── tenants
+│   ├── tenant_members
+│   ├── tenant_invitations
+
+│   ├── roles
+│   ├── permissions
+│   ├── role_permissions
+│   ├── tenant_member_roles
+
+│   ├── subscription_plans
+│   ├── plan_features
+│   ├── tenant_subscriptions
+│   ├── subscription_usage
+
+│   └── outbox_events
+│
+├── WMS SERVICE                      16
+│   ├── warehouses
+│   ├── warehouse_locations
+
+│   ├── product_categories
+│   ├── products
+│   ├── product_units
+
+│   ├── inventory_batches
+│   ├── inventory_stocks
+│   ├── stock_movements
+│   │
+│   ├── inventory_cost_layers        ★
+│   ├── inventory_cost_movements     ★
+│   │
+│   ├── goods_receipts
+│   ├── goods_receipt_items
+
+│   ├── stock_transfers
+│   ├── stock_transfer_items
+
+│   ├── stock_adjustments
+
+│   └── outbox_events
+│
+└── NOTIFICATION SERVICE              4
+    ├── notification_templates
+    ├── notifications
+    ├── notification_deliveries
+    └── notification_preferences
+
+────────────────────────────────────────
+TOTAL                                 38
+
+
+
+#################### FLOW KASAR #########################################
+
+Flow user login :
+
+                         LOGIN
+                           │
+                           ▼
+                    Identity Service
+                           │
+                           ▼
+                     Authenticated
+                           │
+                           ▼
+                    Tenant Service
+                           │
+                           ▼
+                   Check Membership
+                           │
+                ┌──────────┴──────────┐
+                │                     │
+               ADA                 TIDAK ADA
+                │                     │
+                ▼                     ▼
+         Select Tenant        Check Pending Invitation
+                                      │
+                             ┌────────┴────────┐
+                             │                 │
+                            ADA             TIDAK ADA
+                             │                 │
+                             ▼                 ▼
+                       Show Invitation      Onboarding
+                             │                 │
+                             ▼          ┌──────┴──────────┐
+                      Accept / Decline  │                 │
+                             │          ▼                 ▼
+                         ACCEPT     Create Business(Owner)   Join by Code
+                             │
+                             ▼
+                    Create Membership
+                             │
+                             ▼
+                         Dashboard
+
+
+
+Flow warehouse :
+
+USER
+ │
+ ▼
+TENANT
+ │
+ ├──────────── Subscription
+ │
+ ├──────────── Members / RBAC
+ │
+ ▼
+WAREHOUSE
+ │
+ ▼
+PRODUCT
+ │
+ ▼
+BATCH
+ │
+ ├───────────────────┐
+ ▼                   ▼
+PHYSICAL STOCK    COST LAYER
+ │                   │
+ ▼                   ▼
+STOCK MOVEMENT    COST MOVEMENT
+ │                   │
+ ▼                   ▼
+"stok berapa?"    "nilainya berapa?"
+
+
+
+
+
+
+
