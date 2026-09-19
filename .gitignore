@@ -1,45 +1,95 @@
-HELP.md
-.gradle
+# ==============================
+# Gradle
+# ==============================
+.gradle/
+**/.gradle/
 build/
 **/build/
-!**/gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
-*.pem
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
+# Keep Gradle Wrapper
+!gradle/wrapper/gradle-wrapper.jar
 
-### IntelliJ IDEA ###
-.idea
+
+# ==============================
+# IntelliJ IDEA
+# ==============================
+.idea/
 *.iws
 *.iml
 *.ipr
 out/
-!**/src/main/**/out/
-!**/src/test/**/out/
-**/.run/**
-**/.jpb/**
-AGENTS.md
+**/out/
+**/.run/
+**/.jpb/
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
 
-### VS Code ###
+# ==============================
+# Eclipse / STS
+# ==============================
+.apt_generated/
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+bin/
+**/bin/
+
+
+# ==============================
+# NetBeans
+# ==============================
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+
+# ==============================
+# VS Code
+# ==============================
 .vscode/
 
-# Local Docker secrets
-docker/.env
+
+# ==============================
+# Local Environment / Secrets
+# ==============================
+.env
+.env.*
+**/.env
+**/.env.*
+
+# Allow example environment files
+!.env.example
+!**/.env.example
+
+
+# ==============================
+# Local AI / Development Instructions
+# ==============================
+AGENTS.md
+
+
+# ==============================
+# Logs
+# ==============================
+*.log
+logs/
+
+
+# ==============================
+# OS Files
+# ==============================
+.DS_Store
+Thumbs.db
+
+
+# ==============================
+# Temporary Files
+# ==============================
+*.tmp
+*.temp
+*.swp
+*~
