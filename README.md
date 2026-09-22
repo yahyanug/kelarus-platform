@@ -462,6 +462,18 @@ kelarus-platform/
 
 The `component` directory groups independently runnable services.
 
+The `account` service implements email/password registration, email verification, JWT login,
+refresh rotation, logout, and password reset/change. Its implementation is organized under
+`src/main/java/id/com/flare/kelarus/component/` into `controller`, `dto`, `domain`,
+`repository`, `service`, `config`, `security`, `exception`, and `validation`. Business service
+interfaces are in `service/`, with implementations in `service/impl/`. The account database
+schema is defined in `src/main/resources/db/changelog/` (one master changelog and
+five table changesets), and integration/security tests live under `src/test/java/`.
+PostgreSQL provisioning is in `docker/postgres/init-account.sql`.
+See [account setup and API documentation](component/account/README.md) for environment
+variables, local execution, Liquibase, testing, and the deferred notification-delivery boundary.
+The existing `utilities/general` directory remains reserved for shared KELARUS code.
+
 Current Gradle project hierarchy:
 
 ```text

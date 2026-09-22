@@ -21,6 +21,7 @@ services:
 
     volumes:
       - kelarus-platform-db:/var/lib/postgresql/data
+      - ./postgres/init-account.sql:/docker-entrypoint-initdb.d/010-account.sql:ro
 
     networks:
       - kelarus-platform-network
