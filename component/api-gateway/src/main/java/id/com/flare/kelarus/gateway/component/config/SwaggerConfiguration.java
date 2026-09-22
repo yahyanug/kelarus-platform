@@ -1,11 +1,13 @@
 package id.com.flare.kelarus.gateway.component.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.cloud.gateway.route.RouteDefinitionLocator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Primary;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -16,22 +18,24 @@ import static org.springdoc.core.utils.Constants.DEFAULT_API_DOCS_URL;
 @Configuration
 public class SwaggerConfiguration {
 
+	private static final Logger log = LoggerFactory.getLogger(SwaggerConfiguration.class);
+
 	@Bean
-	@Primary
 	@Lazy(false)
-	public SwaggerUiConfigProperties swaggerUiConfig(SwaggerUiConfigProperties config, RouteDefinitionLocator locator) {
+	public ApplicationRunner swaggerApis(SwaggerUiConfigProperties swaggerUiConfigProperties,
+			RouteDefinitionLocator locator) {
 
-		Set<SwaggerUrl> urls = locator.getRouteDefinitions().map(route -> {
-			assert route.getId() != null;
-			return route.getId();
-		}).filter(routeId -> routeId.endsWith("-component")).sort()
-				.map(routeId -> new SwaggerUrl(routeId, "/" + routeId + DEFAULT_API_DOCS_URL, null)).collectList()
-				.map(LinkedHashSet::new).blockOptional().orElseGet(LinkedHashSet::new);
+		return args -> {
+			Set<SwaggerUrl> urls = locator.getRouteDefinitions().map(routeDefinition -> routeDefinition.getId())
+					.filter(routeId -> routeId != null && routeId.endsWith("-component")).sort()
+					.map(routeId -> new SwaggerUrl(routeId, "/" + routeId + DEFAULT_API_DOCS_URL, routeId))
+					.collectList().map(LinkedHashSet::new).blockOptional().orElseGet(LinkedHashSet::new);
 
-		config.setUrl(null);
-		config.setUrls(urls);
+			swaggerUiConfigProperties.setUrl(null);
+			swaggerUiConfigProperties.setUrls(urls);
 
-		return config;
+			log.info("Swagger API definitions registered: {}", urls);
+		};
 	}
 
 }

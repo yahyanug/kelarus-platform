@@ -4,21 +4,23 @@ spring:
 
   cloud:
     gateway:
-      routes:
-        - id: blocked-endpoints
-          order: -100
-          uri: no://op
-          predicates:
-            - Path=${GATEWAY_BLOCKED_PATHS:/internal/**}
-          filters:
-            - SetStatus=FORBIDDEN
+      server:
+        webflux:
+          routes:
+            - id: blocked-endpoints
+              order: -100
+              uri: no://op
+              predicates:
+                - Path=${GATEWAY_BLOCKED_PATHS:/internal/**}
+              filters:
+                - SetStatus=FORBIDDEN
 
-        - id: account-component
-          uri: lb://account-component
-          predicates:
-            - Path=/account-component/**
-          filters:
-            - RewritePath=/account-component(?<segment>/?.*), $\{segment}
+            - id: account-component
+              uri: lb://account-component
+              predicates:
+                - Path=/account-component/**
+              filters:
+                - RewritePath=/account-component(?<segment>/?.*), $\{segment}
 
 server:
   port: ${SERVER_PORT:50002}

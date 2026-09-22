@@ -87,8 +87,10 @@ public class SecurityConfiguration {
 													// authentication.
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.requestCache(cache -> cache.disable())
-				.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/v1/public/auth/**").permitAll()
-						.requestMatchers("/v1/auth/**").authenticated().anyRequest().denyAll())
+				.authorizeHttpRequests(
+						auth -> auth.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
+								.permitAll().requestMatchers(HttpMethod.POST, "/v1/public/auth/**").permitAll()
+								.requestMatchers("/v1/auth/**").authenticated().anyRequest().denyAll())
 				.oauth2ResourceServer(resource -> resource.jwt(jwt -> jwt.jwtAuthenticationConverter(converter))
 						.authenticationEntryPoint((request, response, ex) -> {
 							response.setStatus(401);
