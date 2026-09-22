@@ -5,6 +5,9 @@ import id.com.flare.kelarus.component.dto.request.VerifyEmailRequest;
 import jakarta.validation.Valid;
 
 public interface EmailVerificationService {
-    void create(User user);
-    void verify(@Valid VerifyEmailRequest request);
+
+	void create(User user);
+
+	void verify(@Valid VerifyEmailRequest request);
+
 }

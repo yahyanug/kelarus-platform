@@ -777,7 +777,7 @@ Registration and registry refresh are asynchronous; allow time for discovery aft
 The Eureka dashboard is at `http://localhost:50001/`; keep the registry on a trusted
 internal network when deploying.
 
-For Docker, `docker/apps.yml` contains the same three applications on the existing
+For Docker, `docker/base/apps.yml` contains the same three applications on the existing
 shared network. Build their images with the corresponding `bootBuildImage` tasks and
 `--imageName=kelarus-platform/eureka-server`, `--imageName=kelarus-platform/account`,
 and `--imageName=kelarus-platform/api-gateway`. Start the existing PostgreSQL service

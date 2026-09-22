@@ -6,8 +6,13 @@ import java.util.UUID;
 import jakarta.validation.Valid;
 
 public interface AuthenticationService {
-    RegisterResponse register(@Valid RegisterRequest request);
-    AuthTokenResponse login(@Valid LoginRequest request);
-    AuthTokenResponse refresh(@Valid RefreshTokenRequest request);
-    void logout(UUID authenticatedUserId, @Valid LogoutRequest request);
+
+	RegisterResponse register(@Valid RegisterRequest request);
+
+	AuthTokenResponse login(@Valid LoginRequest request);
+
+	AuthTokenResponse refresh(@Valid RefreshTokenRequest request);
+
+	void logout(UUID authenticatedUserId, @Valid LogoutRequest request);
+
 }

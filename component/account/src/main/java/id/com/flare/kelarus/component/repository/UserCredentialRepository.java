@@ -6,5 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface UserCredentialRepository extends JpaRepository<UserCredential, UUID> {
-    Optional<UserCredential> findByUserId(UUID userId);
+
+	Optional<UserCredential> findByUserId(UUID userId);
+
 }

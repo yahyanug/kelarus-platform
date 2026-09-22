@@ -1,0 +1,68 @@
+name: kelarus-platform
+
+services:
+
+  kelarus-platform-eureka-server:
+    image: ${KELARUS_EUREKA_IMAGE:-kelarus-platform/eureka-server:local}
+    container_name: kelarus-platform-eureka-server
+
+    environment:
+      SERVER_PORT: 50001
+      KELARUS_EUREKA_HOSTNAME: eureka-server
+
+    networks:
+      kelarus-platform-network:
+        aliases:
+          - eureka-server
+
+
+  kelarus-platform-api-gateway:
+    image: ${KELARUS_API_GATEWAY_IMAGE:-kelarus-platform/api-gateway:local}
+    container_name: kelarus-platform-api-gateway
+
+    depends_on:
+      kelarus-platform-eureka-server:
+        condition: service_started
+
+    environment:
+      SERVER_PORT: 50002
+      KELARUS_EUREKA_URL: http://eureka-server:50001/eureka/
+
+    networks:
+      kelarus-platform-network:
+        aliases:
+          - api-gateway
+
+
+  kelarus-platform-account:
+    image: ${KELARUS_ACCOUNT_IMAGE:-kelarus-platform/account:local}
+    container_name: kelarus-platform-account
+
+    depends_on:
+      kelarus-platform-eureka-server:
+        condition: service_started
+
+      kelarus-platform-db:
+        condition: service_healthy
+
+    environment:
+      SERVER_PORT: 50003
+
+      KELARUS_EUREKA_URL: http://eureka-server:50001/eureka/
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
+
+      KELARUS_ACCOUNT_DB_URL: ${KELARUS_ACCOUNT_DB_URL}
+      KELARUS_ACCOUNT_DB_USERNAME: ${KELARUS_ACCOUNT_DB_USERNAME}
+      KELARUS_ACCOUNT_DB_PASSWORD: ${KELARUS_ACCOUNT_DB_PASSWORD}
+
+      KELARUS_AUTH_JWT_SECRET: ${KELARUS_AUTH_JWT_SECRET}
+
+    networks:
+      kelarus-platform-network:
+        aliases:
+          - account
+
+
+networks:
+  kelarus-platform-network:
+    name: kelarus-platform-network

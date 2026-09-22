@@ -1,3 +1,4 @@
 package id.com.flare.kelarus.component.exception;
 
-public record ApiError(String code, String message) {}
+public record ApiError(String code, String message) {
+}

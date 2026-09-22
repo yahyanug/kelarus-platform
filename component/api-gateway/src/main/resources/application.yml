@@ -37,8 +37,9 @@ eureka:
     fetch-registry: true
 
 springdoc:
-  version: '@springdoc.version@'
+  api-docs:
+    enabled: true
+
   swagger-ui:
-    use-root-path: true
-    tagsSorter: alpha
-    persistAuthorization: true
+    enabled: true
+    path: /swagger-ui.html

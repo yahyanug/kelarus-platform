@@ -1,0 +1,27 @@
+services:
+
+  kelarus-platform-eureka-server:
+    build:
+      context: ../../component/eureka-server
+      dockerfile: Dockerfile
+
+    ports:
+      - "50001:50001"
+
+
+  kelarus-platform-api-gateway:
+    build:
+      context: ../../component/api-gateway
+      dockerfile: Dockerfile
+
+    ports:
+      - "50002:50002"
+
+
+  kelarus-platform-account:
+    build:
+      context: ../../component/account
+      dockerfile: Dockerfile
+
+    ports:
+      - "50003:50003"
