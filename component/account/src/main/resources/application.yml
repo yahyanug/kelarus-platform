@@ -41,3 +41,18 @@ logging:
     # JDBC error details can contain email addresses or other persisted values.
     # The API boundary logs a sanitized failure instead.
     org.hibernate.orm.jdbc.error: 'OFF'
+
+springdoc:
+  api-docs:
+    enabled: true
+
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+
+    urls:
+      - name: account-component
+        url: /account-component/v3/api-docs
+
+    urls-primary-name: account-component

@@ -1,6 +1,7 @@
 spring:
   application:
     name: api-gateway
+
   cloud:
     gateway:
       routes:
@@ -10,19 +11,14 @@ spring:
           predicates:
             - Path=${GATEWAY_BLOCKED_PATHS:/internal/**}
           filters:
-              - SetStatus=FORBIDDEN
+            - SetStatus=FORBIDDEN
+
         - id: account-component
           uri: lb://account-component
           predicates:
             - Path=/account-component/**
           filters:
             - RewritePath=/account-component(?<segment>/?.*), $\{segment}
-        - id: swagger
-          uri: http://localhost:${server.port}
-          predicates:
-            - Path=/v3/api-docs/**
-          filters:
-            - RewritePath=/v3/api-docs(?<segment>/?.*), $\{segment}/v3/api-docs
 
 server:
   port: ${SERVER_PORT:50002}
@@ -30,9 +26,10 @@ server:
 eureka:
   instance:
     preferIpAddress: true
+
   client:
     service-url:
-      defaultZone: '${KELARUS_EUREKA_URL:http://localhost:50001/eureka/}'
+      defaultZone: ${KELARUS_EUREKA_URL:http://localhost:50001/eureka/}
     register-with-eureka: true
     fetch-registry: true
 
@@ -43,3 +40,4 @@ springdoc:
   swagger-ui:
     enabled: true
     path: /swagger-ui.html
+    disable-swagger-default-url: true
