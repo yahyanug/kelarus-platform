@@ -1,0 +1,13 @@
+services:
+
+  kelarus-platform-db:
+    restart: unless-stopped
+
+  kelarus-platform-es:
+    restart: unless-stopped
+
+  kelarus-platform-zookeeper:
+    restart: unless-stopped
+
+  kelarus-platform-broker:
+    restart: unless-stopped

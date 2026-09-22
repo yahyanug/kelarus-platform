@@ -1,0 +1,15 @@
+services:
+
+  kelarus-platform-eureka-server:
+    restart: always
+
+
+  kelarus-platform-api-gateway:
+    restart: always
+
+    ports:
+      - "127.0.0.1:50002:50002"
+
+
+  kelarus-platform-account:
+    restart: always

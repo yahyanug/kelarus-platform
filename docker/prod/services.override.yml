@@ -1,0 +1,13 @@
+services:
+
+  kelarus-platform-db:
+    restart: always
+
+  kelarus-platform-es:
+    restart: always
+
+  kelarus-platform-zookeeper:
+    restart: always
+
+  kelarus-platform-broker:
+    restart: always

@@ -1,9 +1,27 @@
 plugins {
-    id 'kelora.spring-service-conventions'
+    id 'kelarus.jpa-conventions'
 }
 
 dependencies {
-    implementation platform("org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}")
+    implementation files('../../dependencies/common-utilities-1.0.0.jar')
+
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
+    // OpenAPI specification only.
+    // Swagger UI will be centralized in api-gateway.
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-api:${springdocVersion}"
+
+    implementation 'org.springframework.boot:spring-boot-starter-liquibase'
+    runtimeOnly 'org.postgresql:postgresql'
+
+    // Test
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testRuntimeOnly 'com.h2database:h2'
 }

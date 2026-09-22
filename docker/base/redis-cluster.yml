@@ -1,0 +1,160 @@
+name: kelarus-platform
+
+x-redis-cluster-node: &redis-cluster-node
+  image: redis:7
+
+  command:
+    - sh
+    - -c
+    - |
+      exec redis-server \
+        --port 6379 \
+        --cluster-enabled yes \
+        --cluster-config-file nodes.conf \
+        --cluster-node-timeout 5000 \
+        --appendonly yes \
+        --cluster-announce-hostname "$${REDIS_CLUSTER_ANNOUNCE_HOSTNAME}" \
+        --cluster-preferred-endpoint-type hostname
+
+  healthcheck:
+    test: ["CMD", "redis-cli", "ping"]
+    interval: 5s
+    timeout: 3s
+    retries: 10
+
+  networks:
+    - kelarus-platform-network
+
+
+services:
+
+  # =========================
+  # Redis Cluster Node 1
+  # =========================
+  kelarus-platform-redis-cluster-1:
+    <<: *redis-cluster-node
+
+    hostname: kelarus-platform-redis-cluster-1
+
+    environment:
+      REDIS_CLUSTER_ANNOUNCE_HOSTNAME: kelarus-platform-redis-cluster-1
+
+    volumes:
+      - kelarus-platform-redis-cluster-1:/data
+
+
+  # =========================
+  # Redis Cluster Node 2
+  # =========================
+  kelarus-platform-redis-cluster-2:
+    <<: *redis-cluster-node
+
+    hostname: kelarus-platform-redis-cluster-2
+
+    environment:
+      REDIS_CLUSTER_ANNOUNCE_HOSTNAME: kelarus-platform-redis-cluster-2
+
+    volumes:
+      - kelarus-platform-redis-cluster-2:/data
+
+
+  # =========================
+  # Redis Cluster Node 3
+  # =========================
+  kelarus-platform-redis-cluster-3:
+    <<: *redis-cluster-node
+
+    hostname: kelarus-platform-redis-cluster-3
+
+    environment:
+      REDIS_CLUSTER_ANNOUNCE_HOSTNAME: kelarus-platform-redis-cluster-3
+
+    volumes:
+      - kelarus-platform-redis-cluster-3:/data
+
+
+  # =========================
+  # Redis Cluster Node 4
+  # =========================
+  kelarus-platform-redis-cluster-4:
+    <<: *redis-cluster-node
+
+    hostname: kelarus-platform-redis-cluster-4
+
+    environment:
+      REDIS_CLUSTER_ANNOUNCE_HOSTNAME: kelarus-platform-redis-cluster-4
+
+    volumes:
+      - kelarus-platform-redis-cluster-4:/data
+
+
+  # =========================
+  # Redis Cluster Node 5
+  # =========================
+  kelarus-platform-redis-cluster-5:
+    <<: *redis-cluster-node
+
+    hostname: kelarus-platform-redis-cluster-5
+
+    environment:
+      REDIS_CLUSTER_ANNOUNCE_HOSTNAME: kelarus-platform-redis-cluster-5
+
+    volumes:
+      - kelarus-platform-redis-cluster-5:/data
+
+
+  # =========================
+  # Redis Cluster Node 6
+  # =========================
+  kelarus-platform-redis-cluster-6:
+    <<: *redis-cluster-node
+
+    hostname: kelarus-platform-redis-cluster-6
+
+    environment:
+      REDIS_CLUSTER_ANNOUNCE_HOSTNAME: kelarus-platform-redis-cluster-6
+
+    volumes:
+      - kelarus-platform-redis-cluster-6:/data
+
+
+  # =========================
+  # Cluster Initializer
+  # =========================
+  kelarus-platform-redis-cluster-builder:
+    build:
+      context: .
+      dockerfile: redis/Redis-Cluster.Dockerfile
+
+    depends_on:
+      kelarus-platform-redis-cluster-1:
+        condition: service_healthy
+      kelarus-platform-redis-cluster-2:
+        condition: service_healthy
+      kelarus-platform-redis-cluster-3:
+        condition: service_healthy
+      kelarus-platform-redis-cluster-4:
+        condition: service_healthy
+      kelarus-platform-redis-cluster-5:
+        condition: service_healthy
+      kelarus-platform-redis-cluster-6:
+        condition: service_healthy
+
+    restart: "no"
+
+    networks:
+      - kelarus-platform-network
+
+
+networks:
+  kelarus-platform-network:
+    name: kelarus-platform-network
+
+
+volumes:
+  kelarus-platform-redis-cluster-1:
+  kelarus-platform-redis-cluster-2:
+  kelarus-platform-redis-cluster-3:
+  kelarus-platform-redis-cluster-4:
+  kelarus-platform-redis-cluster-5:
+  kelarus-platform-redis-cluster-6:

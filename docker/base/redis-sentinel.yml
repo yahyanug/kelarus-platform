@@ -1,0 +1,212 @@
+name: kelarus-platform
+
+services:
+
+  # =========================
+  # Redis HA Primary
+  # =========================
+  kelarus-platform-redis-ha-master:
+    image: redis:7
+
+    hostname: kelarus-platform-redis-ha-master
+
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"
+
+    volumes:
+      - kelarus-platform-redis-ha-master:/data
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+    networks:
+      - kelarus-platform-network
+
+
+  # =========================
+  # Redis HA Replica 1
+  # =========================
+  kelarus-platform-redis-ha-replica-1:
+    image: redis:7
+
+    hostname: kelarus-platform-redis-ha-replica-1
+
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"
+      - --replicaof
+      - kelarus-platform-redis-ha-master
+      - "6379"
+      - --replica-announce-ip
+      - kelarus-platform-redis-ha-replica-1
+      - --replica-announce-port
+      - "6379"
+
+    depends_on:
+      kelarus-platform-redis-ha-master:
+        condition: service_healthy
+
+    volumes:
+      - kelarus-platform-redis-ha-replica-1:/data
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+    networks:
+      - kelarus-platform-network
+
+
+  # =========================
+  # Redis HA Replica 2
+  # =========================
+  kelarus-platform-redis-ha-replica-2:
+    image: redis:7
+
+    hostname: kelarus-platform-redis-ha-replica-2
+
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"
+      - --replicaof
+      - kelarus-platform-redis-ha-master
+      - "6379"
+      - --replica-announce-ip
+      - kelarus-platform-redis-ha-replica-2
+      - --replica-announce-port
+      - "6379"
+
+    depends_on:
+      kelarus-platform-redis-ha-master:
+        condition: service_healthy
+
+    volumes:
+      - kelarus-platform-redis-ha-replica-2:/data
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+    networks:
+      - kelarus-platform-network
+
+
+  # =========================
+  # Sentinel 1
+  # =========================
+  kelarus-platform-redis-sentinel-1:
+    build:
+      context: .
+      dockerfile: redis/Redis-Sentinel.Dockerfile
+
+    hostname: kelarus-platform-redis-sentinel-1
+
+    depends_on:
+      kelarus-platform-redis-ha-master:
+        condition: service_healthy
+      kelarus-platform-redis-ha-replica-1:
+        condition: service_healthy
+      kelarus-platform-redis-ha-replica-2:
+        condition: service_healthy
+
+    environment:
+      SENTINEL_MASTER_NAME: kelarus-ha
+      SENTINEL_MASTER_HOST: kelarus-platform-redis-ha-master
+      SENTINEL_MASTER_PORT: 6379
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "-p", "26379", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+    networks:
+      - kelarus-platform-network
+
+
+  # =========================
+  # Sentinel 2
+  # =========================
+  kelarus-platform-redis-sentinel-2:
+    build:
+      context: .
+      dockerfile: redis/Redis-Sentinel.Dockerfile
+
+    hostname: kelarus-platform-redis-sentinel-2
+
+    depends_on:
+      kelarus-platform-redis-ha-master:
+        condition: service_healthy
+      kelarus-platform-redis-ha-replica-1:
+        condition: service_healthy
+      kelarus-platform-redis-ha-replica-2:
+        condition: service_healthy
+
+    environment:
+      SENTINEL_MASTER_NAME: kelarus-ha
+      SENTINEL_MASTER_HOST: kelarus-platform-redis-ha-master
+      SENTINEL_MASTER_PORT: 6379
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "-p", "26379", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+    networks:
+      - kelarus-platform-network
+
+
+  # =========================
+  # Sentinel 3
+  # =========================
+  kelarus-platform-redis-sentinel-3:
+    build:
+      context: .
+      dockerfile: redis/Redis-Sentinel.Dockerfile
+
+    hostname: kelarus-platform-redis-sentinel-3
+
+    depends_on:
+      kelarus-platform-redis-ha-master:
+        condition: service_healthy
+      kelarus-platform-redis-ha-replica-1:
+        condition: service_healthy
+      kelarus-platform-redis-ha-replica-2:
+        condition: service_healthy
+
+    environment:
+      SENTINEL_MASTER_NAME: kelarus-ha
+      SENTINEL_MASTER_HOST: kelarus-platform-redis-ha-master
+      SENTINEL_MASTER_PORT: 6379
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "-p", "26379", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+    networks:
+      - kelarus-platform-network
+
+
+networks:
+  kelarus-platform-network:
+    name: kelarus-platform-network
+
+
+volumes:
+  kelarus-platform-redis-ha-master:
+  kelarus-platform-redis-ha-replica-1:
+  kelarus-platform-redis-ha-replica-2:
