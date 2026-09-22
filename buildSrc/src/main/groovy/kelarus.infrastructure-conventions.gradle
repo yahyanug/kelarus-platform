@@ -1,0 +1,11 @@
+plugins {
+    id 'kelarus.java-conventions'
+    id 'org.springframework.boot'
+}
+
+dependencies {
+    implementation platform("org.springframework.boot:spring-boot-dependencies:${providers.gradleProperty('springBootVersion').get()}")
+    implementation platform("org.springframework.cloud:spring-cloud-dependencies:${providers.gradleProperty('springCloudVersion').get()}")
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}

@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          # Explicit routes expose only Account's existing API paths.
+          discovery:
+            locator:
+              enabled: false
+          routes:
+            - id: account-auth
+              uri: lb://account
+              predicates:
+                - 'Path=/v1/public/auth/**,/v1/auth/**'
+
+server:
+  port: 18100
+
+eureka:
+  client:
+    service-url:
+      defaultZone: '${KELARUS_EUREKA_URL:http://localhost:18102/eureka/}'
+    register-with-eureka: true
+    fetch-registry: true

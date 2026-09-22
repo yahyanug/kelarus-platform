@@ -1,8 +1,9 @@
 plugins {
-    id 'kelarus.java-conventions'
-    id 'org.springframework.boot'
+    id 'kelarus.infrastructure-conventions'
 }
 
 dependencies {
-    implementation platform("org.springframework.boot:spring-boot-dependencies:${providers.gradleProperty('springBootVersion').get()}")
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 }

@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: eureka-server
+
+server:
+  port: 18102
+
+eureka:
+  instance:
+    hostname: '${KELARUS_EUREKA_HOSTNAME:localhost}'
+
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: '${KELARUS_EUREKA_URL:http://${eureka.instance.hostname}:${server.port}/eureka/}'
+
+  server:
+    enable-self-preservation: true
+    expected-client-renewal-interval-seconds: 30
+    eviction-interval-timer-in-ms: 60000
+    renewal-threshold-update-interval-ms: 900000

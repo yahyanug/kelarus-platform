@@ -1,9 +1,13 @@
 plugins {
-    id 'kelarus.spring-service-conventions'
+    id 'kelarus.infrastructure-conventions'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
 
 dependencies {
-    implementation platform("org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}")
-    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
 }

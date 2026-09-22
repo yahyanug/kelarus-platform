@@ -3,13 +3,17 @@ package id.com.flare.kelarus.component.controller;
 import id.com.flare.kelarus.component.dto.request.*;
 import id.com.flare.kelarus.component.dto.response.*;
 import id.com.flare.kelarus.component.service.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "01-auth")
+@Slf4j
 @RestController
 public class AuthController {
     private final AuthenticationService authentication;

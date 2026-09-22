@@ -1,5 +1,3 @@
-# Kelarus Platform Applications
-
 name: kelarus-platform-apps
 
 services:
@@ -31,8 +29,7 @@ services:
       - kelarus-platform-eureka-server
 
     environment:
-      JAVA_TOOL_OPTIONS: >-
-        -Deureka.client.serviceUrl.defaultZone=http://kelarus-platform-eureka-server:18102/eureka
+      KELARUS_EUREKA_URL: http://kelarus-platform-eureka-server:18102/eureka/
 
     ports:
       - "18100:18100"
@@ -40,6 +37,24 @@ services:
     networks:
       - kelarus-platform-network
 
+
+  # Account uses the existing PostgreSQL service on the shared network.
+  kelarus-platform-account:
+    image: kelarus-platform/account
+    container_name: kelarus-platform-account
+    depends_on:
+      - kelarus-platform-eureka-server
+    environment:
+      KELARUS_EUREKA_URL: http://kelarus-platform-eureka-server:18102/eureka/
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
+      KELARUS_ACCOUNT_DB_URL: jdbc:postgresql://kelarus-platform-db:5432/kelarus_account
+      KELARUS_ACCOUNT_DB_USERNAME: ${KELARUS_ACCOUNT_DB_USERNAME:-user}
+      KELARUS_ACCOUNT_DB_PASSWORD: ${KELARUS_ACCOUNT_DB_PASSWORD:?Set KELARUS_ACCOUNT_DB_PASSWORD}
+      KELARUS_AUTH_JWT_SECRET: ${KELARUS_AUTH_JWT_SECRET:?Set KELARUS_AUTH_JWT_SECRET}
+    ports:
+      - "18101:18101"
+    networks:
+      - kelarus-platform-network
 
 # =========================
 # Existing external network
