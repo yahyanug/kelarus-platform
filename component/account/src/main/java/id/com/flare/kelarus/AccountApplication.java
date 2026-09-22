@@ -1,4 +1,4 @@
-package id.com.flare.kelora.account;
+package id.com.flare.kelarus.account;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

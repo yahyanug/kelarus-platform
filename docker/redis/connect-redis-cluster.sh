@@ -6,15 +6,15 @@ function log {
 }
 
 nodes=(
-  kelora-platform-redis:6379
-  kelora-platform-redis-1:6379
-  kelora-platform-redis-2:6379
-  kelora-platform-redis-3:6379
-  kelora-platform-redis-4:6379
-  kelora-platform-redis-5:6379
+  kelarus-platform-redis:6379
+  kelarus-platform-redis-1:6379
+  kelarus-platform-redis-2:6379
+  kelarus-platform-redis-3:6379
+  kelarus-platform-redis-4:6379
+  kelarus-platform-redis-5:6379
 )
 
-if redis-cli -h kelora-platform-redis cluster info | grep -q 'cluster_state:ok'; then
+if redis-cli -h kelarus-platform-redis cluster info | grep -q 'cluster_state:ok'; then
   log "Redis Cluster already initialized"
   exit 0
 fi

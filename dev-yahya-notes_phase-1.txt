@@ -1,5 +1,5 @@
 ################## High - Level Architecture ################################
- 				     KELORA
+ 				     KELARUS
                                        │
                   ┌──────────────┴──────────────┐
                   │                             │
@@ -44,7 +44,7 @@
                                 │
                                 ▼
                          ┌─────────────┐
-                         │  Kelora WEB      │
+                         │  Kelarus WEB      │
                          │    React         │
                          └──────┬──────┘
                                 │
@@ -137,7 +137,7 @@ Add-ons
 
 ############################## DATABASE ###################################################
 
-Kelora PHASE 1
+Kelarus PHASE 1
 │
 ├── IDENTITY SERVICE                  5
 │   ├── users

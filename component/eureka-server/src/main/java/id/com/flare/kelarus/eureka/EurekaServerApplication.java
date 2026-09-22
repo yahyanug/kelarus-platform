@@ -1,4 +1,4 @@
-package id.com.flare.kelora.eureka;
+package id.com.flare.kelarus.eureka;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package id.com.flare.kelora.gateway;
+package id.com.flare.kelarus.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

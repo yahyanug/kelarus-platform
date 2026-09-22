@@ -1,5 +1,5 @@
 plugins {
-    id 'kelora.java-conventions'
+    id 'kelarus.java-conventions'
     id 'org.springframework.boot'
 }
 

@@ -1,49 +1,49 @@
-# Kelora Platform Applications
+# Kelarus Platform Applications
 
-name: kelora-platform-apps
+name: kelarus-platform-apps
 
 services:
 
   # =========================
   # Eureka Server
   # =========================
-  kelora-platform-eureka-server:
-    image: kelora-platform/eureka-server
+  kelarus-platform-eureka-server:
+    image: kelarus-platform/eureka-server
 
-    container_name: kelora-platform-eureka-server
+    container_name: kelarus-platform-eureka-server
 
     ports:
       - "18102:18102"
 
     networks:
-      - kelora-platform-network
+      - kelarus-platform-network
 
 
   # =========================
   # API Gateway
   # =========================
-  kelora-platform-api-gateway:
-    image: kelora-platform/api-gateway
+  kelarus-platform-api-gateway:
+    image: kelarus-platform/api-gateway
 
-    container_name: kelora-platform-api-gateway
+    container_name: kelarus-platform-api-gateway
 
     depends_on:
-      - kelora-platform-eureka-server
+      - kelarus-platform-eureka-server
 
     environment:
       JAVA_TOOL_OPTIONS: >-
-        -Deureka.client.serviceUrl.defaultZone=http://kelora-platform-eureka-server:18102/eureka
+        -Deureka.client.serviceUrl.defaultZone=http://kelarus-platform-eureka-server:18102/eureka
 
     ports:
       - "18100:18100"
 
     networks:
-      - kelora-platform-network
+      - kelarus-platform-network
 
 
 # =========================
 # Existing external network
 # =========================
 networks:
-  kelora-platform-network:
+  kelarus-platform-network:
     external: true

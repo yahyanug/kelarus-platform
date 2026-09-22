@@ -16,64 +16,64 @@ x-redis-node: &redis-node
     retries: 10
 
 services:
-  kelora-platform-redis:
+  kelarus-platform-redis:
     <<: *redis-node
     ports:
       - '6379:6379'
     volumes:
-      - kelora-platform-redis-0:/data
-  kelora-platform-redis-1:
+      - kelarus-platform-redis-0:/data
+  kelarus-platform-redis-1:
     <<: *redis-node
     ports:
       - '16379:6379'
     volumes:
-      - kelora-platform-redis-1:/data
-  kelora-platform-redis-2:
+      - kelarus-platform-redis-1:/data
+  kelarus-platform-redis-2:
     <<: *redis-node
     ports:
       - '16380:6379'
     volumes:
-      - kelora-platform-redis-2:/data
-  kelora-platform-redis-3:
+      - kelarus-platform-redis-2:/data
+  kelarus-platform-redis-3:
     <<: *redis-node
     ports:
       - '16381:6379'
     volumes:
-      - kelora-platform-redis-3:/data
-  kelora-platform-redis-4:
+      - kelarus-platform-redis-3:/data
+  kelarus-platform-redis-4:
     <<: *redis-node
     ports:
       - '16382:6379'
     volumes:
-      - kelora-platform-redis-4:/data
-  kelora-platform-redis-5:
+      - kelarus-platform-redis-4:/data
+  kelarus-platform-redis-5:
     <<: *redis-node
     ports:
       - '16383:6379'
     volumes:
-      - kelora-platform-redis-5:/data
-  kelora-platform-redis-cluster-builder:
+      - kelarus-platform-redis-5:/data
+  kelarus-platform-redis-cluster-builder:
     depends_on:
-      kelora-platform-redis:
+      kelarus-platform-redis:
         condition: service_healthy
-      kelora-platform-redis-1:
+      kelarus-platform-redis-1:
         condition: service_healthy
-      kelora-platform-redis-2:
+      kelarus-platform-redis-2:
         condition: service_healthy
-      kelora-platform-redis-3:
+      kelarus-platform-redis-3:
         condition: service_healthy
-      kelora-platform-redis-4:
+      kelarus-platform-redis-4:
         condition: service_healthy
-      kelora-platform-redis-5:
+      kelarus-platform-redis-5:
         condition: service_healthy
     build:
       context: .
       dockerfile: redis/Redis-Cluster.Dockerfile
 
 volumes:
-  kelora-platform-redis-0:
-  kelora-platform-redis-1:
-  kelora-platform-redis-2:
-  kelora-platform-redis-3:
-  kelora-platform-redis-4:
-  kelora-platform-redis-5:
+  kelarus-platform-redis-0:
+  kelarus-platform-redis-1:
+  kelarus-platform-redis-2:
+  kelarus-platform-redis-3:
+  kelarus-platform-redis-4:
+  kelarus-platform-redis-5:

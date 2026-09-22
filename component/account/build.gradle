@@ -1,5 +1,5 @@
 plugins {
-    id 'kelora.spring-service-conventions'
+    id 'kelarus.spring-service-conventions'
 }
 
 dependencies {

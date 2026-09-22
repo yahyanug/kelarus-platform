@@ -1,6 +1,6 @@
 name: redis-sentinel
 services:
-  kelora-platform-redis-master:
+  kelarus-platform-redis-master:
     image: redis:7
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
@@ -8,35 +8,35 @@ services:
       timeout: 3s
       retries: 10
 
-  kelora-platform-redis-slave:
-    image: redis:7
-    command:
-      - 'redis-server'
-      - '--slaveof kelora-platform-redis-master 6379'
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 3s
-      retries: 10
-
-  kelora-platform-redis-slave-1:
+  kelarus-platform-redis-slave:
     image: redis:7
     command:
       - 'redis-server'
-      - '--slaveof kelora-platform-redis-master 6379'
+      - '--slaveof kelarus-platform-redis-master 6379'
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
       timeout: 3s
       retries: 10
 
-  kelora-platform-redis-sentinel-1:
+  kelarus-platform-redis-slave-1:
+    image: redis:7
+    command:
+      - 'redis-server'
+      - '--slaveof kelarus-platform-redis-master 6379'
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  kelarus-platform-redis-sentinel-1:
     depends_on:
-      kelora-platform-redis-master:
+      kelarus-platform-redis-master:
         condition: service_healthy
-      kelora-platform-redis-slave:
+      kelarus-platform-redis-slave:
         condition: service_healthy
-      kelora-platform-redis-slave-1:
+      kelarus-platform-redis-slave-1:
         condition: service_healthy
     build:
       context: .
@@ -44,13 +44,13 @@ services:
     ports:
       - '26379:26379'
 
-  kelora-platform-redis-sentinel-2:
+  kelarus-platform-redis-sentinel-2:
     depends_on:
-      kelora-platform-redis-master:
+      kelarus-platform-redis-master:
         condition: service_healthy
-      kelora-platform-redis-slave:
+      kelarus-platform-redis-slave:
         condition: service_healthy
-      kelora-platform-redis-slave-1:
+      kelarus-platform-redis-slave-1:
         condition: service_healthy
     build:
       context: .
@@ -58,13 +58,13 @@ services:
     ports:
       - '26380:26379'
 
-  kelora-platform-redis-sentinel-3:
+  kelarus-platform-redis-sentinel-3:
     depends_on:
-      kelora-platform-redis-master:
+      kelarus-platform-redis-master:
         condition: service_healthy
-      kelora-platform-redis-slave:
+      kelarus-platform-redis-slave:
         condition: service_healthy
-      kelora-platform-redis-slave-1:
+      kelarus-platform-redis-slave-1:
         condition: service_healthy
     build:
       context: .

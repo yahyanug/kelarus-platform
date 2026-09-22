@@ -1,60 +1,60 @@
-# Kelora Platform Infrastructure Services
+# Kelarus Platform Infrastructure Services
 
-name: kelora-platform-services
+name: kelarus-platform-services
 
 services:
 
   # =========================
   # PostgreSQL
   # =========================
-  kelora-platform-db:
+  kelarus-platform-db:
     image: postgres:17
-    container_name: kelora-platform-db
+    container_name: kelarus-platform-db
 
     environment:
-      POSTGRES_DB: kelora_platform
+      POSTGRES_DB: kelarus_platform
       POSTGRES_USER: user
-      POSTGRES_PASSWORD: ${KELORA_POSTGRES_PASSWORD:?Set KELORA_POSTGRES_PASSWORD in docker/.env}
+      POSTGRES_PASSWORD: ${KELARUS_POSTGRES_PASSWORD:?Set KELARUS_POSTGRES_PASSWORD in docker/.env}
 
     ports:
       - "5434:5432"
 
     volumes:
-      - kelora-platform-db:/var/lib/postgresql/data
+      - kelarus-platform-db:/var/lib/postgresql/data
 
     networks:
-      - kelora-platform-network
+      - kelarus-platform-network
 
 
   # =========================
   # Elasticsearch
   # =========================
-  kelora-platform-es:
+  kelarus-platform-es:
     image: elasticsearch:7.17.8
-    container_name: kelora-platform-es
+    container_name: kelarus-platform-es
 
     environment:
       discovery.type: single-node
       xpack.security.enabled: true
-      ELASTIC_PASSWORD: ${KELORA_ELASTIC_PASSWORD:?Set KELORA_ELASTIC_PASSWORD in docker/.env}
+      ELASTIC_PASSWORD: ${KELARUS_ELASTIC_PASSWORD:?Set KELARUS_ELASTIC_PASSWORD in docker/.env}
       ES_JAVA_OPTS: "-Xms1g -Xmx1g"
 
     ports:
       - "9201:9200"
 
     volumes:
-      - kelora-platform-es:/usr/share/elasticsearch/data
+      - kelarus-platform-es:/usr/share/elasticsearch/data
 
     networks:
-      - kelora-platform-network
+      - kelarus-platform-network
 
 
   # =========================
   # Zookeeper
   # =========================
-  kelora-platform-zookeeper:
+  kelarus-platform-zookeeper:
     image: confluentinc/cp-zookeeper:7.6.1
-    container_name: kelora-platform-zookeeper
+    container_name: kelarus-platform-zookeeper
 
     environment:
       ZOOKEEPER_CLIENT_PORT: 2188
@@ -64,21 +64,21 @@ services:
       - "2188:2188"
 
     volumes:
-      - kelora-platform-zookeeper:/var/lib/zookeeper
+      - kelarus-platform-zookeeper:/var/lib/zookeeper
 
     networks:
-      - kelora-platform-network
+      - kelarus-platform-network
 
 
   # =========================
   # Kafka
   # =========================
-  kelora-platform-broker:
+  kelarus-platform-broker:
     image: confluentinc/cp-kafka:7.6.1
-    container_name: kelora-platform-broker
+    container_name: kelarus-platform-broker
 
     depends_on:
-      - kelora-platform-zookeeper
+      - kelarus-platform-zookeeper
 
     ports:
       - "9093:9092"
@@ -86,13 +86,13 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
 
-      KAFKA_ZOOKEEPER_CONNECT: kelora-platform-zookeeper:2188
+      KAFKA_ZOOKEEPER_CONNECT: kelarus-platform-zookeeper:2188
 
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
 
       KAFKA_LISTENERS: INTERNAL://0.0.0.0:29092,EXTERNAL://0.0.0.0:9092
 
-      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kelora-platform-broker:29092,EXTERNAL://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kelarus-platform-broker:29092,EXTERNAL://localhost:9092
 
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
 
@@ -108,7 +108,7 @@ services:
           "CMD",
           "kafka-topics",
           "--bootstrap-server",
-          "kelora-platform-broker:29092",
+          "kelarus-platform-broker:29092",
           "--list"
         ]
       interval: 10s
@@ -116,24 +116,24 @@ services:
       retries: 10
 
     volumes:
-      - kelora-platform-broker:/var/lib/kafka
+      - kelarus-platform-broker:/var/lib/kafka
 
     networks:
-      - kelora-platform-network
+      - kelarus-platform-network
 
 
   # =========================
   # Redis Standalone
   # =========================
-  kelora-platform-redis-standalone:
+  kelarus-platform-redis-standalone:
     image: redis:7
-    container_name: kelora-platform-redis-standalone
+    container_name: kelarus-platform-redis-standalone
 
     ports:
       - "6380:6379"
 
     volumes:
-      - kelora-platform-redis:/data
+      - kelarus-platform-redis:/data
 
     healthcheck:
       test:
@@ -149,23 +149,23 @@ services:
       retries: 5
 
     networks:
-      - kelora-platform-network
+      - kelarus-platform-network
 
 
 # =========================
 # Networks
 # =========================
 networks:
-  kelora-platform-network:
-    name: kelora-platform-network
+  kelarus-platform-network:
+    name: kelarus-platform-network
 
 
 # =========================
 # Volumes
 # =========================
 volumes:
-  kelora-platform-db:
-  kelora-platform-es:
-  kelora-platform-zookeeper:
-  kelora-platform-broker:
-  kelora-platform-redis:
+  kelarus-platform-db:
+  kelarus-platform-es:
+  kelarus-platform-zookeeper:
+  kelarus-platform-broker:
+  kelarus-platform-redis:
