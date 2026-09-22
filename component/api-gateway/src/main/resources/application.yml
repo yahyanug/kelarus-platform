@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: blocked-endpoints
+              order: -100
+              uri: no://op
+              predicates:
+                - Path=${GATEWAY_BLOCKED_PATHS:/internal/**}
+              filters:
+                - SetStatus=FORBIDDEN
+
+            - id: account-component
+              uri: lb://account-component
+              predicates:
+                - Path=/account-component/**
+              filters:
+                - RewritePath=/account-component(?<segment>/?.*), $\{segment}
+
+server:
+  port: ${SERVER_PORT:50002}
+
+eureka:
+  instance:
+    preferIpAddress: true
+
+  client:
+    service-url:
+      defaultZone: ${KELARUS_EUREKA_URL:http://localhost:50001/eureka/}
+    register-with-eureka: true
+    fetch-registry: true
+
+springdoc:
+  api-docs:
+    enabled: true
+
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    disable-swagger-default-url: true

@@ -1,0 +1,4 @@
+plugins {
+    id 'kelarus.java-conventions'
+    id 'java-library'
+}

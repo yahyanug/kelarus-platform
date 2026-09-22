@@ -1,9 +1,7 @@
 plugins {
-    id 'kelora.spring-service-conventions'
+    id 'kelarus.component-conventions'
 }
 
 dependencies {
-    implementation platform("org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}")
-    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
 }

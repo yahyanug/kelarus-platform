@@ -3,13 +3,28 @@ plugins {
 }
 
 repositories {
-    mavenCentral()
     gradlePluginPortal()
+    mavenCentral()
 }
 
 def repositoryProperties = new Properties()
-file('../gradle.properties').withInputStream { repositoryProperties.load(it) }
+file('../gradle.properties').withInputStream {
+    repositoryProperties.load(it)
+}
+
+def springBootVersion =
+        repositoryProperties.getProperty('springBootVersion')
+
+def springDependencyManagementVersion =
+        repositoryProperties.getProperty('springDependencyManagementVersion')
+
+def springJavaFormatVersion =
+        repositoryProperties.getProperty('springJavaFormatVersion')
 
 dependencies {
-    implementation "org.springframework.boot:spring-boot-gradle-plugin:${repositoryProperties.getProperty('springBootVersion')}"
+    implementation "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+
+    implementation "io.spring.gradle:dependency-management-plugin:${springDependencyManagementVersion}"
+
+    implementation "io.spring.javaformat:spring-javaformat-gradle-plugin:${springJavaFormatVersion}"
 }

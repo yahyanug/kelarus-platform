@@ -1,0 +1,17 @@
+plugins {
+    id 'kelarus.java-conventions'
+    id 'io.spring.dependency-management'
+}
+
+def springBootVersion =
+        providers.gradleProperty('springBootVersion').get()
+
+def springCloudVersion =
+        providers.gradleProperty('springCloudVersion').get()
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
