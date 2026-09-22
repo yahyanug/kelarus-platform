@@ -3,24 +3,42 @@ spring:
     name: api-gateway
   cloud:
     gateway:
-      server:
-        webflux:
-          # Explicit routes expose only Account's existing API paths.
-          discovery:
-            locator:
-              enabled: false
-          routes:
-            - id: account-auth
-              uri: lb://account
-              predicates:
-                - 'Path=/v1/public/auth/**,/v1/auth/**'
+      routes:
+        - id: blocked-endpoints
+          order: -100
+          uri: no://op
+          predicates:
+            - Path=${GATEWAY_BLOCKED_PATHS:/internal/**}
+          filters:
+              - SetStatus=FORBIDDEN
+        - id: account-component
+          uri: lb://account-component
+          predicates:
+            - Path=/account-component/**
+          filters:
+            - RewritePath=/account-component(?<segment>/?.*), $\{segment}
+        - id: swagger
+          uri: http://localhost:${server.port}
+          predicates:
+            - Path=/v3/api-docs/**
+          filters:
+            - RewritePath=/v3/api-docs(?<segment>/?.*), $\{segment}/v3/api-docs
 
 server:
-  port: 18100
+  port: ${SERVER_PORT:50002}
 
 eureka:
+  instance:
+    preferIpAddress: true
   client:
     service-url:
-      defaultZone: '${KELARUS_EUREKA_URL:http://localhost:18102/eureka/}'
+      defaultZone: '${KELARUS_EUREKA_URL:http://localhost:50001/eureka/}'
     register-with-eureka: true
     fetch-registry: true
+
+springdoc:
+  version: '@springdoc.version@'
+  swagger-ui:
+    use-root-path: true
+    tagsSorter: alpha
+    persistAuthorization: true

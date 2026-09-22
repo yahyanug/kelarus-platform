@@ -762,11 +762,11 @@ by the discovery/routing foundation.
 
 | Component | Port | Discovery behavior |
 | --- | --- | --- |
-| Eureka Server | 18102 | Standalone registry; does not register itself or fetch peers |
-| Account | 18101 | Registers as `account` and fetches the registry |
-| API Gateway | 18100 | Fetches the registry and forwards to `lb://account` |
+| Eureka Server | 50001 | Standalone registry; does not register itself or fetch peers |
+| Account | 50003 | Registers as `account` and fetches the registry |
+| API Gateway | 50002 | Fetches the registry and forwards to `lb://account` |
 
-`KELARUS_EUREKA_URL` defaults to `http://localhost:18102/eureka/`.
+`KELARUS_EUREKA_URL` defaults to `http://localhost:50001/eureka/`.
 The standalone registry's `KELARUS_EUREKA_HOSTNAME` defaults to `localhost`; its self URL
 uses that hostname and its configured port so it is not mistaken for a peer.
 The Gateway exposes `/v1/public/auth/**` and `/v1/auth/**` with their paths unchanged.
@@ -774,7 +774,7 @@ Authorization headers are forwarded; Account continues to enforce authentication
 Automatic discovery route exposure is disabled, so `/account/**` is not a route.
 If no Account instance is discoverable, the matching route returns 503.
 Registration and registry refresh are asynchronous; allow time for discovery after startup.
-The Eureka dashboard is at `http://localhost:18102/`; keep the registry on a trusted
+The Eureka dashboard is at `http://localhost:50001/`; keep the registry on a trusted
 internal network when deploying.
 
 For Docker, `docker/apps.yml` contains the same three applications on the existing
@@ -788,7 +788,7 @@ secret through the environment, then run:
 docker compose --env-file docker/.env -f docker/apps.yml up -d
 ```
 
-Containers use `http://kelarus-platform-eureka-server:18102/eureka/` for discovery.
+Containers use `http://eureka-server:50001/eureka/` for discovery.
 Account advertises its container IP so the Gateway can reach it on the shared network.
 No database volumes are recreated by this setup.
 

@@ -15,7 +15,7 @@ spring:
     change-log: classpath:db/changelog/db.changelog-master.yaml
 
 server:
-  port: 18101
+  port: ${SERVER_PORT:50003}
   error:
     include-message: never
     include-binding-errors: never
@@ -24,7 +24,7 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone: '${KELARUS_EUREKA_URL:http://localhost:18102/eureka/}'
+      defaultZone: '${KELARUS_EUREKA_URL:http://localhost:50001/eureka/}'
     register-with-eureka: true
     fetch-registry: true
 

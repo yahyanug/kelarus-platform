@@ -1,5 +1,5 @@
 plugins {
-    id 'kelarus.spring-service-conventions'
+    id 'kelarus.component-conventions'
 }
 
 dependencies {

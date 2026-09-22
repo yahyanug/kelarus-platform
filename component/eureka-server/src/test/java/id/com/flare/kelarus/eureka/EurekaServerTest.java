@@ -26,7 +26,7 @@ class EurekaServerTest {
         HttpClient client = HttpClient.newHttpClient();
         String registration = """
                 {"instance":{"instanceId":"account-test","app":"ACCOUNT","hostName":"localhost",
-                "ipAddr":"127.0.0.1","status":"UP","port":{"$":18101,"@enabled":"true"},
+                "ipAddr":"127.0.0.1","status":"UP","port":{"$":50003,"@enabled":"true"},
                 "vipAddress":"account","dataCenterInfo":{"@class":"com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo","name":"MyOwn"}}}
                 """;
         HttpResponse<String> registered = client.send(request("/eureka/apps/ACCOUNT")

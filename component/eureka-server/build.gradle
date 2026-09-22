@@ -1,11 +1,5 @@
 plugins {
-    id 'kelarus.infrastructure-conventions'
-}
-
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-    }
+    id 'kelarus.component-conventions'
 }
 
 dependencies {

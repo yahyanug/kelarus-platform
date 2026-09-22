@@ -50,10 +50,10 @@ Run from the repository root (Java 21 is selected through the existing Gradle to
 .\gradlew.bat :component:account:bootRun
 ```
 
-The account service listens on port 18101. Eureka keeps its existing localhost:18102
+The account service listens on port 50003. Eureka keeps its existing localhost:50001
 configuration. For standalone local execution, set `EUREKA_CLIENT_ENABLED=false`.
 Override the registry URL with `KELARUS_EUREKA_URL` when Eureka runs elsewhere.
-With Eureka and Gateway running, the same auth paths are available on Gateway port 18100;
+With Eureka and Gateway running, the same auth paths are available on Gateway port 50002;
 Gateway discovers this service as `account` and preserves request paths and bearer headers.
 
 Token durations use typed `kelarus.auth` configuration:

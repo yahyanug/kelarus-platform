@@ -3,7 +3,7 @@ spring:
     name: eureka-server
 
 server:
-  port: 18102
+  port: ${SERVER_PORT:50001}
 
 eureka:
   instance:
@@ -13,7 +13,7 @@ eureka:
     register-with-eureka: false
     fetch-registry: false
     service-url:
-      defaultZone: '${KELARUS_EUREKA_URL:http://${eureka.instance.hostname}:${server.port}/eureka/}'
+      defaultZone: '${KELARUS_EUREKA_URL:http://localhost:50001/eureka/}'
 
   server:
     enable-self-preservation: true

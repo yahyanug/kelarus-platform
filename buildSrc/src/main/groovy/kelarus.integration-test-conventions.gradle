@@ -1,0 +1,43 @@
+plugins {
+    id 'kelarus.java-conventions'
+}
+
+def lombokVersion =
+        providers.gradleProperty('lombokVersion').get()
+
+def testContainersVersion =
+        providers.gradleProperty('testContainersVersion').get()
+
+testing {
+    suites {
+        integrationTest(JvmTestSuite) {
+            useJUnitJupiter()
+
+            dependencies {
+                implementation project()
+
+                compileOnly "org.projectlombok:lombok:${lombokVersion}"
+                annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+                implementation platform(
+                        "org.testcontainers:testcontainers-bom:${testContainersVersion}"
+                )
+
+                implementation 'org.testcontainers:testcontainers'
+                implementation 'org.testcontainers:junit-jupiter'
+            }
+
+            targets {
+                all {
+                    testTask.configure {
+                        shouldRunAfter(test)
+                    }
+                }
+            }
+        }
+    }
+}
+
+tasks.named('check') {
+    dependsOn(testing.suites.integrationTest)
+}

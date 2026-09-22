@@ -1,17 +1,68 @@
 plugins {
+    id 'io.spring.javaformat'
     id 'java'
+    id 'jvm-test-suite'
+    id 'jacoco'
 }
+
+def javaVersion = providers.gradleProperty('javaVersion').orElse('21')
+def lombokVersion = providers.gradleProperty('lombokVersion')
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(providers.gradleProperty('javaVersion').get().toInteger())
+        languageVersion = JavaLanguageVersion.of(
+                javaVersion.get().toInteger()
+        )
+    }
+}
+
+dependencies {
+    compileOnly "org.projectlombok:lombok:${lombokVersion.get()}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion.get()}"
+
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion.get()}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion.get()}"
+}
+
+testing {
+    suites {
+        test {
+            useJUnitJupiter()
+        }
     }
 }
 
 tasks.withType(Test).configureEach {
-    useJUnitPlatform()
+    minHeapSize = '128m'
+    maxHeapSize = '1024m'
+
+    ignoreFailures = Boolean.getBoolean('test.ignoreFailures')
+
+    testLogging {
+        showStandardStreams =
+                Boolean.getBoolean('test.showStandardStreams')
+
+        events 'passed', 'skipped', 'failed'
+    }
 }
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+    options.compilerArgs.add('-parameters')
+}
+
+tasks.named('processResources') {
+    inputs.property('projectVersion', project.version)
+
+    filesMatching([
+            '**/application.yml',
+            '**/application.yaml'
+    ]) {
+        filter {
+            it.replace(
+                    '#project.version#',
+                    project.version.toString()
+            )
+        }
+    }
 }
