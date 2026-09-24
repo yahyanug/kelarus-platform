@@ -5,5 +5,8 @@ plugins {
 rootProject.name = 'kelarus-platform'
 
 include 'component:account'
+include 'component:common'
+include 'component:notification'
+include 'component:wms'
 include 'component:api-gateway'
 include 'component:eureka-server'

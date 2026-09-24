@@ -469,6 +469,9 @@ Focus:
 - Gradle multi-project structure
 - shared build conventions
 - account service
+- common platform component
+- notification component
+- WMS component
 - API Gateway
 - Eureka service discovery
 - Docker-based local development environment

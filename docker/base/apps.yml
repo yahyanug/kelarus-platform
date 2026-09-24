@@ -51,9 +51,9 @@ services:
       KELARUS_EUREKA_URL: http://eureka-server:50001/eureka/
       EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
 
-      KELARUS_ACCOUNT_DB_URL: ${KELARUS_ACCOUNT_DB_URL}
-      KELARUS_ACCOUNT_DB_USERNAME: ${KELARUS_ACCOUNT_DB_USERNAME}
-      KELARUS_ACCOUNT_DB_PASSWORD: ${KELARUS_ACCOUNT_DB_PASSWORD}
+      KELARUS_DATABASE_URL: ${KELARUS_DATABASE_URL}
+      KELARUS_DATABASE_USERNAME: ${KELARUS_DATABASE_USERNAME}
+      KELARUS_DATABASE_PASSWORD: ${KELARUS_DATABASE_PASSWORD}
 
       KELARUS_AUTH_JWT_SECRET: ${KELARUS_AUTH_JWT_SECRET}
 
@@ -62,6 +62,83 @@ services:
         aliases:
           - account
 
+  kelarus-platform-common:
+    image: ${KELARUS_COMMON_IMAGE:-kelarus-platform/common:local}
+    container_name: kelarus-platform-common
+
+    depends_on:
+      kelarus-platform-eureka-server:
+        condition: service_started
+
+      kelarus-platform-db:
+        condition: service_healthy
+
+    environment:
+      SERVER_PORT: 50004
+
+      KELARUS_EUREKA_URL: http://eureka-server:50001/eureka/
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
+
+      KELARUS_DATABASE_URL: ${KELARUS_DATABASE_URL}
+      KELARUS_DATABASE_USERNAME: ${KELARUS_DATABASE_USERNAME}
+      KELARUS_DATABASE_PASSWORD: ${KELARUS_DATABASE_PASSWORD}
+
+    networks:
+      kelarus-platform-network:
+        aliases:
+          - common
+
+  kelarus-platform-notification:
+    image: ${KELARUS_NOTIFICATION_IMAGE:-kelarus-platform/notification:local}
+    container_name: kelarus-platform-notification
+
+    depends_on:
+      kelarus-platform-eureka-server:
+        condition: service_started
+
+      kelarus-platform-db:
+        condition: service_healthy
+
+    environment:
+      SERVER_PORT: 50005
+
+      KELARUS_EUREKA_URL: http://eureka-server:50001/eureka/
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
+
+      KELARUS_DATABASE_URL: ${KELARUS_DATABASE_URL}
+      KELARUS_DATABASE_USERNAME: ${KELARUS_DATABASE_USERNAME}
+      KELARUS_DATABASE_PASSWORD: ${KELARUS_DATABASE_PASSWORD}
+
+    networks:
+      kelarus-platform-network:
+        aliases:
+          - notification
+
+  kelarus-platform-wms:
+    image: ${KELARUS_WMS_IMAGE:-kelarus-platform/wms:local}
+    container_name: kelarus-platform-wms
+
+    depends_on:
+      kelarus-platform-eureka-server:
+        condition: service_started
+
+      kelarus-platform-db:
+        condition: service_healthy
+
+    environment:
+      SERVER_PORT: 50006
+
+      KELARUS_EUREKA_URL: http://eureka-server:50001/eureka/
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
+
+      KELARUS_DATABASE_URL: ${KELARUS_DATABASE_URL}
+      KELARUS_DATABASE_USERNAME: ${KELARUS_DATABASE_USERNAME}
+      KELARUS_DATABASE_PASSWORD: ${KELARUS_DATABASE_PASSWORD}
+
+    networks:
+      kelarus-platform-network:
+        aliases:
+          - wms
 
 networks:
   kelarus-platform-network:

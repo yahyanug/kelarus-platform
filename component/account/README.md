@@ -2,7 +2,7 @@
 
 The account service implements email/password identity only. It owns `users`,
 `user_credentials`, `refresh_tokens`, `email_verifications`, and `password_reset_tokens`
-in the PostgreSQL database `kelarus_account`.
+in the `account` schema of the shared PostgreSQL database `kelarus_platform`.
 
 Application/business callers depend on `AuthenticationService`, `PasswordService`, and
 `EmailVerificationService` interfaces. Their Spring-managed implementations live in
@@ -15,29 +15,30 @@ concrete technical support class for JWT creation, random tokens, and hashing.
 Use the existing PostgreSQL 17 service, exposed on port 5434:
 
 ```powershell
-docker compose --env-file docker/.env -f docker/services.yml up -d kelarus-platform-db
+docker compose --env-file docker/local/.env -f docker/base/services.yml -f docker/local/services.override.yml up -d kelarus-platform-db
 ```
 
-Set the existing Docker environment variables required by that compose file. On a new
-PostgreSQL volume, `docker/postgres/init-account.sql` creates `kelarus_account` alongside
-the existing `kelarus_platform` database. Initialization scripts do not run again on an
-existing volume. For an existing database container, run the same idempotent script:
+All persistent components use the single `kelarus_platform` database and have an isolated
+schema. The database bootstrap creates the `account`, `common`, and `wms` schemas on a new
+PostgreSQL volume. Initialization scripts do not run again on an existing volume. To bring
+an existing database container to the same structure without deleting its volume, run:
 
 ```powershell
-Get-Content -Raw docker/postgres/init-account.sql | docker exec -i kelarus-platform-db psql -v ON_ERROR_STOP=1 -U user -d postgres
+Get-Content -Raw docker/base/postgres/init-schemas.sql | docker exec -i kelarus-platform-db psql -v ON_ERROR_STOP=1 -U user -d kelarus_platform
 ```
 
-Do not delete the volume. The script checks whether the database exists and creates
-only the missing database. Liquibase creates the five tables on application startup;
-Hibernate uses `ddl-auto=validate` and never creates the schema.
+Do not delete the volume. The script creates only missing schemas. Account also creates
+its own schema before Liquibase starts, so it can run against a PostgreSQL instance that
+was not provisioned through Docker. Liquibase creates the five account tables in the
+`account` schema; Hibernate uses `ddl-auto=validate` and never creates tables.
 
 Provide these environment variables to the application/IDE without committing their values:
 
 | Variable | Meaning |
 | --- | --- |
-| `KELARUS_ACCOUNT_DB_URL` | Defaults to `jdbc:postgresql://localhost:5434/kelarus_account` |
-| `KELARUS_ACCOUNT_DB_USERNAME` | Required database username; existing local container uses `user` |
-| `KELARUS_ACCOUNT_DB_PASSWORD` | Required database password; match the configured PostgreSQL password |
+| `KELARUS_DATABASE_URL` | Defaults to `jdbc:postgresql://localhost:5434/kelarus_platform` |
+| `KELARUS_DATABASE_USERNAME` | Required database username; existing local container uses `user` |
+| `KELARUS_DATABASE_PASSWORD` | Required database password; match the configured PostgreSQL password |
 | `KELARUS_AUTH_JWT_SECRET` | Required Base64 encoding of at least 32 cryptographically random bytes |
 
 Generate the signing secret with a trusted secret manager or cryptographic random generator.
