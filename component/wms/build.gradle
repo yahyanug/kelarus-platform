@@ -1,0 +1,21 @@
+plugins {
+    id 'kelarus.jpa-conventions'
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
+    // OpenAPI specification only.
+    // Swagger UI will be centralized in api-gateway.
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-api:${springdocVersion}"
+
+    implementation 'org.springframework.boot:spring-boot-starter-liquibase'
+    implementation "net.lbruun.springboot:preliquibase-spring-boot-starter:${preliquibaseVersion}"
+    runtimeOnly 'org.postgresql:postgresql'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+    testRuntimeOnly 'com.h2database:h2'
+}

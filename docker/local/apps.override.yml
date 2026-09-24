@@ -25,3 +25,30 @@ services:
 
     ports:
       - "50003:50003"
+
+
+  kelarus-platform-common:
+    build:
+      context: ../../component/common
+      dockerfile: Dockerfile
+
+    ports:
+      - "50004:50004"
+
+
+  kelarus-platform-notification:
+    build:
+      context: ../../component/notification
+      dockerfile: Dockerfile
+
+    ports:
+      - "50005:50005"
+
+
+  kelarus-platform-wms:
+    build:
+      context: ../../component/wms
+      dockerfile: Dockerfile
+
+    ports:
+      - "50006:50006"
