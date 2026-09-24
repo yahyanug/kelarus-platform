@@ -2,17 +2,19 @@ spring:
   application:
     name: account-component
   datasource:
-    url: '${KELARUS_ACCOUNT_DB_URL:jdbc:postgresql://localhost:5434/kelarus_account}'
-    username: '${KELARUS_ACCOUNT_DB_USERNAME}'
-    password: '${KELARUS_ACCOUNT_DB_PASSWORD}'
+    url: '${KELARUS_DATABASE_URL:${KELARUS_ACCOUNT_DB_URL:jdbc:postgresql://localhost:5434/kelarus_platform}}'
+    username: '${KELARUS_DATABASE_USERNAME:${KELARUS_ACCOUNT_DB_USERNAME}}'
+    password: '${KELARUS_DATABASE_PASSWORD:${KELARUS_ACCOUNT_DB_PASSWORD}}'
   jpa:
     hibernate:
       ddl-auto: validate
     open-in-view: false
     properties:
       hibernate.jdbc.time_zone: UTC
+      hibernate.default_schema: account
   liquibase:
-    change-log: classpath:db/changelog/db.changelog-master.yaml
+    change-log: classpath:liquibase/master.xml
+    default-schema: account
 
 server:
   port: ${SERVER_PORT:50003}

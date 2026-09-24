@@ -13,3 +13,15 @@ services:
 
   kelarus-platform-account:
     restart: unless-stopped
+
+
+  kelarus-platform-common:
+    restart: unless-stopped
+
+
+  kelarus-platform-notification:
+    restart: unless-stopped
+
+
+  kelarus-platform-wms:
+    restart: unless-stopped

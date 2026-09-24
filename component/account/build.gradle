@@ -18,6 +18,7 @@ dependencies {
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-api:${springdocVersion}"
 
     implementation 'org.springframework.boot:spring-boot-starter-liquibase'
+    implementation "net.lbruun.springboot:preliquibase-spring-boot-starter:${preliquibaseVersion}"
     runtimeOnly 'org.postgresql:postgresql'
 
     // Test

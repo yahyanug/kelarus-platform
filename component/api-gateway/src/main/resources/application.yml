@@ -22,6 +22,27 @@ spring:
               filters:
                 - RewritePath=/account-component(?<segment>/?.*), $\{segment}
 
+            - id: common-component
+              uri: lb://common-component
+              predicates:
+                - Path=/common-component/**
+              filters:
+                - RewritePath=/common-component(?<segment>/?.*), $\{segment}
+
+            - id: notification-component
+              uri: lb://notification-component
+              predicates:
+                - Path=/notification-component/**
+              filters:
+                - RewritePath=/notification-component(?<segment>/?.*), $\{segment}
+
+            - id: wms-component
+              uri: lb://wms-component
+              predicates:
+                - Path=/wms-component/**
+              filters:
+                - RewritePath=/wms-component(?<segment>/?.*), $\{segment}
+
 server:
   port: ${SERVER_PORT:50002}
 
