@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.com.flare.common.utilities.network.http.HttpRequestDetails;
 import id.com.flare.kelarus.component.constant.DeliveryTypeEnum;
 import id.com.flare.kelarus.component.constant.LoginTypeEnum;
+import id.com.flare.kelarus.component.constant.OtpTypeEnum;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,17 +21,20 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class OtpRequest implements Serializable {
 
-    @NotBlank
-    String identifier;
+	@NotBlank
+	String identifier;
 
-    @NotNull
-    LoginTypeEnum loginTypeEnum;
+	@NotNull
+	LoginTypeEnum loginTypeEnum;
 
-    @NotNull
-    DeliveryTypeEnum deliveryType;
+	@NotNull
+	OtpTypeEnum otpTypeEnum;
 
-    @JsonIgnore
-    @Transient
-    private HttpRequestDetails httpDetail;
+	@NotNull
+	DeliveryTypeEnum deliveryType;
+
+	@JsonIgnore
+	@Transient
+	private HttpRequestDetails httpDetail;
 
 }

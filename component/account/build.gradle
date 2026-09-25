@@ -3,6 +3,8 @@ plugins {
 }
 
 dependencies {
+    implementation project(':utilities:general')
+
     implementation files('../../dependencies/common-utilities-1.0.0.jar')
 
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'

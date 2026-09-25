@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 
 public interface AuthenticationService {
 
+	OtpResponse requestOtp (@Valid OtpRequest otpRequest);
+
 	RegisterResponse register(@Valid RegisterRequest request);
 
 	AuthTokenResponse login(@Valid LoginRequest request);

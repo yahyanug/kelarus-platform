@@ -10,6 +10,8 @@ import id.com.flare.kelarus.component.repository.*;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.UUID;
+
+import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,8 @@ import static id.com.flare.kelarus.component.exception.AuthError.*;
 @Service
 @Validated
 public class AuthenticationServiceImpl implements AuthenticationService {
+
+	private final ValidationService validationService;
 
 	private final UserRepository users;
 
@@ -39,10 +43,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 	private final String dummyPasswordHash;
 
-	public AuthenticationServiceImpl(UserRepository users, UserCredentialRepository credentials,
-			RefreshTokenRepository refreshTokens, EmailVerificationService verification, PasswordEncoder passwords,
-			TokenService tokens, AuthProperties properties, Clock clock) {
-		this.users = users;
+	public AuthenticationServiceImpl(ValidationService validationService, UserRepository users, UserCredentialRepository credentials,
+                                     RefreshTokenRepository refreshTokens, EmailVerificationService verification, PasswordEncoder passwords,
+                                     TokenService tokens, AuthProperties properties, Clock clock) {
+        this.validationService = validationService;
+        this.users = users;
 		this.credentials = credentials;
 		this.refreshTokens = refreshTokens;
 		this.verification = verification;
@@ -51,6 +56,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		this.properties = properties;
 		this.clock = clock;
 		this.dummyPasswordHash = passwords.encode(UUID.randomUUID().toString());
+	}
+
+	@Override
+	public OtpResponse requestOtp (OtpRequest otpRequest) {
+		String key = handlingRequestKey(otpRequest);
+
+
+	}
+
+	private String handlingRequestKey(OtpRequest otpRequest) {
+		validationService.validateOTPRequestKey(otpRequest.getOtpTypeEnum());
 	}
 
 	@Transactional

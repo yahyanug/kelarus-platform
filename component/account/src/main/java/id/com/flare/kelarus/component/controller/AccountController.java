@@ -23,34 +23,36 @@ import java.util.UUID;
 @Validated
 public class AccountController {
 
-    @PostMapping("/v1/public/auth/register")
-    @ResponseStatus(HttpStatus.CREATED)
-    public RegisterResponse register(@Valid @RequestBody RegisterRequest request) {
-        return authentication.register(request);
-    }
+	@PostMapping("/v1/public/auth/register")
+	@ResponseStatus(HttpStatus.CREATED)
+	public RegisterResponse register(@Valid @RequestBody RegisterRequest request) {
+		// return authentication.register(request);
+		return null;
+	}
 
-    @PostMapping("/v1/public/auth/verify-email")
-    public GenericMessageResponse verifyEmail(@Valid @RequestBody VerifyEmailRequest request) {
-        verification.verify(request);
-        return new GenericMessageResponse("Email verified.");
-    }
+	@PostMapping("/v1/public/auth/verify-email")
+	public GenericMessageResponse verifyEmail(@Valid @RequestBody VerifyEmailRequest request) {
+		// verification.verify(request);
+		return new GenericMessageResponse("Email verified.");
+	}
 
-    @PostMapping("/v1/public/auth/forgot-password")
-    public GenericMessageResponse forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
-        passwords.forgotPassword(request);
-        return new GenericMessageResponse("If the account is eligible, password reset instructions will be sent.");
-    }
+	@PostMapping("/v1/public/auth/forgot-password")
+	public GenericMessageResponse forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+		// passwords.forgotPassword(request);
+		return new GenericMessageResponse("If the account is eligible, password reset instructions will be sent.");
+	}
 
-    @PostMapping("/v1/public/auth/reset-password")
-    public GenericMessageResponse resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
-        passwords.resetPassword(request);
-        return new GenericMessageResponse("Password reset.");
-    }
+	@PostMapping("/v1/public/auth/reset-password")
+	public GenericMessageResponse resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+		// passwords.resetPassword(request);
+		return new GenericMessageResponse("Password reset.");
+	}
 
-    @PostMapping("/v1/auth/change-password")
-    public GenericMessageResponse changePassword(@AuthenticationPrincipal Jwt principal,
-                                                 @Valid @RequestBody ChangePasswordRequest request) {
-        passwords.changePassword(UUID.fromString(principal.getSubject()), request);
-        return new GenericMessageResponse("Password changed.");
-    }
+	@PostMapping("/v1/auth/change-password")
+	public GenericMessageResponse changePassword(@AuthenticationPrincipal Jwt principal,
+			@Valid @RequestBody ChangePasswordRequest request) {
+		// passwords.changePassword(UUID.fromString(principal.getSubject()), request);
+		return new GenericMessageResponse("Password changed.");
+	}
+
 }

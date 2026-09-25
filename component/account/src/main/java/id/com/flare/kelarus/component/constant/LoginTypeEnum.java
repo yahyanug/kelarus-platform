@@ -7,10 +7,10 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum LoginTypeEnum {
 
-    ADMIN("ADMIN", "Access admin portal only"), USER("USER", "Access user portal only");
+	ADMIN("ADMIN", "Access admin portal only"), USER("USER", "Access user portal only");
 
-    private final String code;
+	private final String code;
 
-    private final String description;
+	private final String description;
 
 }

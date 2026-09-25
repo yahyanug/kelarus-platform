@@ -12,18 +12,18 @@ import java.time.Instant;
 @Data
 public class OtpResponse implements Serializable {
 
-    private String key;
+	private String key;
 
-    private String destination;
+	private String destination;
 
-    private DeliveryTypeEnum deliveryType;
+	private DeliveryTypeEnum deliveryType;
 
-    private OtpTypeEnum otpType;
+	private OtpTypeEnum otpType;
 
-    private Integer expiresIn;
+	private Integer expiresIn;
 
-    private Instant expiresAt;
+	private Instant expiresAt;
 
-    private Integer resendAfter;
+	private Integer resendAfter;
 
 }

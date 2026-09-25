@@ -8,7 +8,6 @@ import id.com.flare.kelarus.component.service.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import java.util.UUID;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,34 +34,38 @@ public class AuthController {
 
 	@PublicAuth
 	@PostMapping("/request-otp")
+	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<OtpResponse> requestOTP(@Valid @RequestBody OtpRequest otpRequest,
-												  HttpServletRequest httpServletRequest) {
+			HttpServletRequest httpServletRequest) {
 		otpRequest.setHttpDetail(HttpRequestUtil.getDetails(httpServletRequest));
-		return authenticationService.requestOtp(otpRequest);
+		return ResponseEntity.status(HttpStatus.CREATED).body(authenticationService.requestOtp(otpRequest));
 	}
 
 	@PublicAuth
 	@GetMapping("/verify-otp")
 	@ResponseStatus(HttpStatus.ACCEPTED)
 	public void verifyOTP() {
-		authenticationService.verifyOtp();
+		// authenticationService.verifyOtp();
 	}
 
+	@PublicAuth
 	@PostMapping("/v1/public/auth/login")
 	public AuthTokenResponse login(@Valid @RequestBody LoginRequest request) {
-		return authentication.login(request);
+		// return authentication.login(request);
+		return null;
 	}
 
 	@PostMapping("/v1/auth/logout")
 	public GenericMessageResponse logout(@AuthenticationPrincipal Jwt principal,
-										 @Valid @RequestBody LogoutRequest request) {
-		authentication.logout(UUID.fromString(principal.getSubject()), request);
+			@Valid @RequestBody LogoutRequest request) {
+		// authentication.logout(UUID.fromString(principal.getSubject()), request);
 		return new GenericMessageResponse("Logged out.");
 	}
 
 	@PostMapping("/v1/public/auth/refresh")
 	public AuthTokenResponse refresh(@Valid @RequestBody RefreshTokenRequest request) {
-		return authenticationService.refresh(request);
+		// return authenticationService.refresh(request);
+		return null;
 	}
 
 }

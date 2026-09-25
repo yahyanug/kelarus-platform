@@ -432,6 +432,11 @@ Infrastructure, messaging, caching, observability, IoT, and other complexity sho
 
 KELARUS currently uses a **Gradle multi-project monorepo**.
 
+The `utilities:general` library contains KELARUS-specific contracts shared by component
+modules, including global configuration keys, global error abstractions, and outbound
+ports. Components consume it through standard Gradle project dependencies; it does not
+contain component business logic or generic `common-utilities` helpers.
+
 ---
 
 ## 💻 Technology Stack
